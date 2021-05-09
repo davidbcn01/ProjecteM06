@@ -23,5 +23,21 @@ public class EquipoController {
     public Equipo createEquipo(@Valid @RequestBody Equipo equipo){
         return equipoRepo.save(equipo);
     }
+    @DeleteMapping("/equipo/{id}")
+    public void deleteTeam(@PathVariable Integer id){
+        equipoRepo.deleteById(id);
+    }
+    @PutMapping("/equipo/{id}")
+    private Equipo replaceEquipo(@RequestBody Equipo equipo, @PathVariable Integer id){
+        return equipoRepo.findById(id).map(equipo1 -> {
+            equipo1.setLiga(equipo.getLiga());
+            equipo1.setNombre(equipo.getNombre());
+            return equipoRepo.save(equipo1);
+        })
+                .orElseGet(()->{
+                    equipo.setIdEquipo(id);
+                    return equipoRepo.save(equipo);
+                });
+    }
 
 }

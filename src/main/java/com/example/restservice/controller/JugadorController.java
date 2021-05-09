@@ -25,5 +25,26 @@ public class JugadorController {
     public Jugador createPlayer(@Valid @RequestBody Jugador jugador){
         return jugadorRepo.save(jugador);
     }
+    @DeleteMapping("/jugador/{id}")
+    public void deletePlayer(@PathVariable Integer id){
+        jugadorRepo.deleteById(id);
+    }
+    @PutMapping("/jugador/{id}")
+    private Jugador replacePlayer(@RequestBody Jugador player, @PathVariable Integer id){
+        return jugadorRepo.findById(id).map(player1 -> {
+            player1.setApellidos(player.getApellidos());
+            player1.setFechaNacimiento(player.getFechaNacimiento());
+            player1.setNombre(player.getNombre());
+            player1.setCarta(player.getCarta());
+            player1.setEstadisticas(player.getEstadisticas());
+            player1.setNacionalidad(player.getNacionalidad());
+            player1.setEquipo(player.getEquipo());
+            return jugadorRepo.save(player1);
+        })
+                .orElseGet(()->{
+                    player.setIdJugador(id);
+                    return jugadorRepo.save(player);
+                });
+    }
 
 }
