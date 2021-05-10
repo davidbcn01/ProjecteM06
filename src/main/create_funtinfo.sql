@@ -8,7 +8,6 @@ CREATE TABLE jugador(
   	fechaNacimiento 	  DATE,
 
 CONSTRAINT pk_idJugador PRIMARY KEY(idJugador),
-CONSTRAINT fk_idJugador FOREIGN KEY(idJugador) REFERENCES estadisticas(idJugador),
 CONSTRAINT fk_idEquipo  FOREIGN KEY(idEquipo) REFERENCES equipo(idEquipo),
 CONSTRAINT fk_idCarta  FOREIGN KEY(idCarta) REFERENCES carta(idCarta)
   );
